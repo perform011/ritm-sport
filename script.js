@@ -1,8 +1,6 @@
 const products = [
-  { id: 'amflow-px', name: 'Bicicletă electrică MTB Amflow PX Carbon Pro 29"/27.5" 2026', brand: 'AMFLOW', category: 'Ciclism', price: 11108.93, image: 'public/products/amflow.webp', badge: 'NOU' },
   { id: 'garmin-170', name: 'Ceas Garmin Forerunner 170 Music', brand: 'GARMIN', category: 'Ceasuri & GPS', price: 389.76, oldPrice: 487.20, image: 'public/products/garmin-170.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/ceas-garmin-forerunner-170-music/' },
   { id: 'hoka-skyward', name: 'Pantofi alergare damă Hoka Skyward X 2', brand: 'HOKA', category: 'Alergare', price: 262.53, oldPrice: 328.16, image: 'public/products/hoka-skyward.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/pantofi-alergare-dama-hoka-skyward-x-2/' },
-  { id: 'dahon-boardwalk', name: 'Bicicletă pliabilă Dahon Boardwalk D7 16"', brand: 'DAHON', category: 'Ciclism', price: 805.88, image: 'public/products/dahon.webp' },
   { id: 'hoka-zinal', name: 'Pantofi alergare trail damă Hoka Zinal 3', brand: 'HOKA', category: 'Alergare', price: 136.60, oldPrice: 181.92, image: 'public/products/hoka-zinal.webp', badge: '−25%' },
   { id: 'shokz-opendots', name: 'Căști audio Shokz OpenDots One', brand: 'SHOKZ', category: 'Audio', price: 213.70, oldPrice: 229.85, image: 'public/products/shokz.webp', badge: '−7%' },
   { id: 'oakley-sphaera', name: "Ochelari Oakley Sphaera Strike Giro d'Italia 2026", brand: 'OAKLEY', category: 'Ciclism', price: 207.93, oldPrice: 259.91, image: 'public/products/oakley-glasses.webp', badge: '−20%' },
@@ -269,6 +267,16 @@ function createUniqueOrderCode() {
   return code;
 }
 
+function createOrderItem(productId, quantity = 1) {
+  const product = products.find((entry) => entry.id === productId);
+  return {
+    productId,
+    name: product?.name || productId,
+    price: product?.price || 0,
+    quantity
+  };
+}
+
 function ensureDemoOrders() {
   if (!customer || customerOrders().length > 0) return;
 
@@ -278,8 +286,8 @@ function ensureDemoOrders() {
       createdAt: '2026-08-08T10:30:00.000Z',
       customerEmail: customer.email,
       items: [
-        { productId: 'garmin-170', name: products[1].name, price: products[1].price, quantity: 1 },
-        { productId: 'on-cloudmonster', name: products[13].name, price: products[13].price, quantity: 1 }
+        createOrderItem('garmin-170'),
+        createOrderItem('on-cloudmonster')
       ],
       subtotal: 556.43,
       shipping: 0,
@@ -292,7 +300,7 @@ function ensureDemoOrders() {
       createdAt: '2026-07-24T12:00:00.000Z',
       customerEmail: customer.email,
       items: [
-        { productId: 'asics-kayano', name: products[11].name, price: products[11].price, quantity: 1 }
+        createOrderItem('asics-kayano')
       ],
       subtotal: 155.56,
       shipping: 0,
