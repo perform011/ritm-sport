@@ -1,7 +1,7 @@
 const products = [
   { id: 'amflow-px', name: 'Bicicletă electrică MTB Amflow PX Carbon Pro 29"/27.5" 2026', brand: 'AMFLOW', category: 'Ciclism', price: 11108.93, image: 'public/products/amflow.webp', badge: 'NOU' },
   { id: 'garmin-170', name: 'Ceas Garmin Forerunner 170 Music', brand: 'GARMIN', category: 'Ceasuri & GPS', price: 389.76, oldPrice: 487.20, image: 'public/products/garmin-170.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/ceas-garmin-forerunner-170-music/' },
-  { id: 'hoka-skyward', name: 'Pantofi alergare damă Hoka Skyward X 2', brand: 'HOKA', category: 'Alergare', price: 210.02, oldPrice: 262.53, image: 'public/products/hoka-skyward.webp', badge: '−20%' },
+  { id: 'hoka-skyward', name: 'Pantofi alergare damă Hoka Skyward X 2', brand: 'HOKA', category: 'Alergare', price: 262.53, oldPrice: 328.16, image: 'public/products/hoka-skyward.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/pantofi-alergare-dama-hoka-skyward-x-2/' },
   { id: 'dahon-boardwalk', name: 'Bicicletă pliabilă Dahon Boardwalk D7 16"', brand: 'DAHON', category: 'Ciclism', price: 805.88, image: 'public/products/dahon.webp' },
   { id: 'hoka-zinal', name: 'Pantofi alergare trail damă Hoka Zinal 3', brand: 'HOKA', category: 'Alergare', price: 136.60, oldPrice: 181.92, image: 'public/products/hoka-zinal.webp', badge: '−25%' },
   { id: 'shokz-opendots', name: 'Căști audio Shokz OpenDots One', brand: 'SHOKZ', category: 'Audio', price: 213.70, oldPrice: 229.85, image: 'public/products/shokz.webp', badge: '−7%' },
