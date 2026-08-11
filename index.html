@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="RITM SPORT — echipament sportiv, comenzi și urmărirea livrării, cu prețuri în USD." />
+    <title>RITM SPORT — Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="RITM SPORT pagina principală">
+        <strong>RITM</strong>
+        <span>SPORT</span>
+      </a>
+
+      <div class="header-note" aria-hidden="true">
+        <span>Selecție sport</span>
+        <i></i>
+        <span>Prețuri în USD</span>
+      </div>
+
+      <nav class="header-actions" aria-label="Acțiuni client">
+        <button id="account-button" class="header-button" type="button" aria-controls="account-panel">
+          <span class="header-button-icon" aria-hidden="true">◯</span>
+          <span id="account-button-label">Contul meu</span>
+        </button>
+        <button id="cart-button" class="header-button cart-button" type="button" aria-controls="cart-panel">
+          <span>Coș</span>
+          <strong id="cart-count" aria-label="0 produse în coș">0</strong>
+        </button>
+      </nav>
+    </header>
+
+    <main class="catalog">
+      <div class="catalog-intro">
+        <div>
+          <span class="eyebrow">CATALOG / 2026</span>
+          <h1>Echipament care<br /><em>ține ritmul.</em></h1>
+        </div>
+        <p>Produse pentru alergare, ciclism și antrenament, într-o selecție simplă și ușor de explorat.</p>
+      </div>
+
+      <div class="catalog-tools">
+        <label class="search-box">
+          <span class="visually-hidden">Caută produse</span>
+          <input id="search" type="search" placeholder="Caută produs sau brand" autocomplete="off" />
+          <span aria-hidden="true">⌕</span>
+        </label>
+
+        <div class="filters" aria-label="Filtrează produsele">
+          <button class="active" type="button" data-category="Toate">Toate</button>
+          <button type="button" data-category="Alergare">Alergare</button>
+          <button type="button" data-category="Ciclism">Ciclism</button>
+          <button type="button" data-category="Ceasuri & GPS">Ceasuri & GPS</button>
+          <button type="button" data-category="Audio">Audio</button>
+          <button type="button" data-category="Fotbal">Fotbal</button>
+        </div>
+      </div>
+
+      <div class="results-row">
+        <span id="result-count">16 produse</span>
+        <span>Livrare gratuită de la $150</span>
+      </div>
+
+      <section id="product-grid" class="product-grid" aria-live="polite" aria-label="Produse"></section>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <strong>Niciun produs găsit.</strong>
+        <p>Încearcă alt termen sau alege categoria „Toate”.</p>
+        <button id="reset-filters" type="button">Resetează filtrele</button>
+      </div>
+    </main>
+
+    <div id="page-overlay" class="page-overlay" hidden></div>
+
+    <aside id="cart-panel" class="side-panel" aria-hidden="true" aria-labelledby="cart-title" hidden>
+      <div class="panel-header">
+        <div>
+          <span class="eyebrow">CUMPĂRĂTURI</span>
+          <h2 id="cart-title">Coșul tău</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-layer aria-label="Închide coșul">×</button>
+      </div>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="summary-row"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div>
+        <div class="summary-row"><span>Livrare</span><strong id="cart-shipping">—</strong></div>
+        <div class="summary-row summary-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+        <button id="checkout-button" class="primary-button" type="button">Finalizează comanda</button>
+        <p class="panel-note">Livrare gratuită pentru comenzi de minimum $150.</p>
+      </div>
+    </aside>
+
+    <aside id="account-panel" class="side-panel account-panel" aria-hidden="true" aria-labelledby="account-title" hidden>
+      <div class="panel-header">
+        <div>
+          <span class="eyebrow">SPAȚIUL CLIENTULUI</span>
+          <h2 id="account-title">Contul meu</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-layer aria-label="Închide contul">×</button>
+      </div>
+      <div id="account-content" class="account-content"></div>
+    </aside>
+
+    <section id="checkout-modal" class="modal-shell" role="dialog" aria-modal="true" aria-labelledby="checkout-title" hidden>
+      <div class="modal-card">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow">ULTIMUL PAS</span>
+            <h2 id="checkout-title">Date de livrare</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-layer aria-label="Închide formularul">×</button>
+        </div>
+
+        <form id="checkout-form" class="checkout-form">
+          <div class="form-grid">
+            <label class="field field-wide">
+              <span>Nume complet</span>
+              <input id="checkout-name" name="name" type="text" autocomplete="name" required />
+            </label>
+            <label class="field">
+              <span>E-mail</span>
+              <input id="checkout-email" name="email" type="email" autocomplete="email" required />
+            </label>
+            <label class="field">
+              <span>Telefon</span>
+              <input name="phone" type="tel" autocomplete="tel" required />
+            </label>
+            <label class="field field-wide">
+              <span>Adresă</span>
+              <input name="address" type="text" autocomplete="street-address" required />
+            </label>
+            <label class="field">
+              <span>Oraș</span>
+              <input name="city" type="text" autocomplete="address-level2" required />
+            </label>
+            <label class="field">
+              <span>Cod poștal</span>
+              <input name="postalCode" type="text" autocomplete="postal-code" required />
+            </label>
+            <label class="field field-wide">
+              <span>Metodă de plată</span>
+              <select name="payment" required>
+                <option value="Card online">Card online</option>
+                <option value="Plata la livrare">Plata la livrare</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="checkout-summary">
+            <span>Total comandă</span>
+            <strong id="checkout-total">$0.00</strong>
+          </div>
+          <button class="primary-button" type="submit">Plasează comanda</button>
+          <p class="form-disclaimer">Versiune demonstrativă: comanda este salvată numai pe acest dispozitiv, iar plata nu este procesată.</p>
+        </form>
+      </div>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
