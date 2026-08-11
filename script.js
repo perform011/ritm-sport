@@ -13,7 +13,7 @@ const products = [
   { id: 'on-cloudmonster', name: 'Pantofi alergare damă ON Cloudmonster 3', brand: 'ON', category: 'Alergare', price: 166.67, oldPrice: 222.22, image: 'public/products/on-cloudmonster.webp', badge: '−25%' },
   { id: 'adidas-supernova', name: 'Pantofi alergare bărbați Adidas Supernova Rise 3', brand: 'ADIDAS', category: 'Alergare', price: 124.18, oldPrice: 163.40, image: 'public/products/adidas-supernova.webp', badge: '−24%' },
   { id: 'puma-deviate', name: 'Pantofi Puma Deviate Nitro Elite 4 Showtime', brand: 'PUMA', category: 'Alergare', price: 190.63, oldPrice: 272.11, image: 'public/products/puma-deviate.webp', badge: '−30%' },
-  { id: 'urban-flex', name: 'Pantofi sport Urban Flex negru-lime', brand: 'RITM', category: 'Alergare', price: 24.90, image: 'public/products/urban-flex.webp', badge: 'NOU' },
+  { id: 'urban-flex', name: 'Pantofi sport Urban Flex negru-lime', brand: 'RITM', category: 'Alergare', price: 24.90, image: 'public/products/urban-flex.webp', badge: 'NOU', checkoutUrl: 'https://whop.com/ritm-sport/pantofi-sport-urban-flex-negru-lime/' },
   { id: 'aero-run', name: 'Pantofi alergare Aero Run gri-albastru', brand: 'RITM', category: 'Alergare', price: 27.90, image: 'public/products/aero-run.webp', badge: 'NOU' },
   { id: 'street-color', name: 'Pantofi sport Street Color bej-coral', brand: 'RITM', category: 'Alergare', price: 29.90, image: 'public/products/street-color.webp', badge: 'NOU' }
 ];
