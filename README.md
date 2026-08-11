@@ -4,7 +4,7 @@ Magazin sportiv static în limba română, fără framework și fără etapă de
 
 ## Funcții
 
-- catalog cu 14 produse și prețuri în USD;
+- catalog cu 17 produse și prețuri în USD;
 - căutare și filtrare după categorie;
 - coș cu cantități și calculul livrării;
 - formular demonstrativ de comandă;
