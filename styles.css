@@ -366,6 +366,29 @@ h1 em {
 
 .add-button:hover { transform: rotate(90deg); background: var(--white); }
 
+.buy-button {
+  flex: 0 0 auto;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.buy-button:hover {
+  background: var(--ink);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
 .empty-state {
   min-height: 320px;
   place-items: center;
@@ -731,6 +754,85 @@ h1 em {
   transform: translateX(-50%);
 }
 
+.payment-return-page {
+  min-height: 100dvh;
+  background:
+    linear-gradient(rgba(17, 17, 15, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 15, 0.055) 1px, transparent 1px),
+    var(--paper);
+  background-size: 38px 38px;
+}
+
+.payment-return-header { grid-template-columns: 1fr auto; }
+.payment-return-header .eyebrow { margin: 0; }
+
+.payment-return-main {
+  min-height: calc(100dvh - 78px);
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vw, 80px);
+}
+
+.payment-return-card {
+  width: min(850px, 100%);
+  padding: clamp(30px, 7vw, 78px);
+  background: var(--white);
+  border: 1px solid var(--ink);
+  box-shadow: 18px 18px 0 var(--lime);
+}
+
+.payment-return-mark {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 38px;
+  color: var(--lime);
+  background: var(--ink);
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.payment-return-card h1 {
+  margin-bottom: 30px;
+  font-size: clamp(48px, 7vw, 88px);
+}
+
+.payment-return-card > p {
+  max-width: 630px;
+  margin: 0;
+  color: #55554f;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.payment-return-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.payment-return-actions a {
+  display: grid;
+  place-items: center;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.payment-return-actions .primary-button { color: var(--lime); }
+.payment-return-actions .primary-button:hover { color: var(--ink); }
+
+.payment-return-card small {
+  display: block;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
 @media (max-width: 1080px) {
   .site-header { grid-template-columns: 1fr auto; }
   .header-note { display: none; }
@@ -776,6 +878,11 @@ h1 em {
   .form-grid { grid-template-columns: 1fr; }
   .field-wide { grid-column: auto; }
   .progress-labels { font-size: 6px; }
+  .payment-return-header .eyebrow { display: none; }
+  .payment-return-main { min-height: calc(100dvh - 68px); padding: 22px; }
+  .payment-return-card { padding: 30px 22px; box-shadow: 9px 9px 0 var(--lime); }
+  .payment-return-card h1 { font-size: clamp(42px, 13vw, 60px); }
+  .payment-return-actions { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 390px) {

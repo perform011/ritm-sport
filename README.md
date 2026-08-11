@@ -10,6 +10,7 @@ Magazin sportiv static în limba română, fără framework și fără etapă de
 - formular demonstrativ de comandă;
 - cont local de client;
 - comenzi curente, istoric și urmărire după numărul comenzii.
+- plată externă prin Whop pentru produsul Oakley Icon Training.
 
 Datele contului, coșului și comenzilor sunt salvate în `localStorage`, numai în browserul curent. Parola nu este salvată, iar plata nu este procesată. Pentru conturi reale și sincronizare între dispozitive este necesar un backend cu bază de date.
 

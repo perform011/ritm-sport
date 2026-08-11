@@ -11,7 +11,7 @@ const products = [
   { id: 'garmin-970', name: 'Ceas Garmin Forerunner 970 AMOLED', brand: 'GARMIN', category: 'Ceasuri & GPS', price: 740.52, oldPrice: 823.75, image: 'public/products/garmin-970.webp', badge: '−10%' },
   { id: 'mizuno-alpha', name: 'Ghete fotbal Mizuno Alpha III Elite Mix SS 2026', brand: 'MIZUNO', category: 'Fotbal', price: 153.38, oldPrice: 255.56, image: 'public/products/mizuno-alpha.webp', badge: '−40%' },
   { id: 'asics-kayano', name: 'Pantofi alergare damă Asics Gel-Kayano 32 Sunny Sizzle', brand: 'ASICS', category: 'Alergare', price: 155.56, oldPrice: 222.22, image: 'public/products/asics-kayano.webp', badge: '−30%' },
-  { id: 'oakley-jersey', name: 'Bluză ciclism bărbați Oakley Icon Training', brand: 'OAKLEY', category: 'Ciclism', price: 116.78, oldPrice: 166.67, image: 'public/products/oakley-jersey.webp', badge: '−30%' },
+  { id: 'oakley-jersey', name: 'Bluză ciclism bărbați Oakley Icon Training', brand: 'OAKLEY', category: 'Ciclism', price: 116.78, oldPrice: 145.98, image: 'public/products/oakley-jersey.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/oakley-icon-training/' },
   { id: 'on-cloudmonster', name: 'Pantofi alergare damă ON Cloudmonster 3', brand: 'ON', category: 'Alergare', price: 166.67, oldPrice: 222.22, image: 'public/products/on-cloudmonster.webp', badge: '−25%' },
   { id: 'adidas-supernova', name: 'Pantofi alergare bărbați Adidas Supernova Rise 3', brand: 'ADIDAS', category: 'Alergare', price: 124.18, oldPrice: 163.40, image: 'public/products/adidas-supernova.webp', badge: '−24%' },
   { id: 'puma-deviate', name: 'Pantofi Puma Deviate Nitro Elite 4 Showtime', brand: 'PUMA', category: 'Alergare', price: 190.63, oldPrice: 272.11, image: 'public/products/puma-deviate.webp', badge: '−30%' }
@@ -120,7 +120,9 @@ function productCard(product) {
             <strong>${formatMoney(product.price)}</strong>
             ${product.oldPrice ? `<s>${formatMoney(product.oldPrice)}</s>` : ''}
           </div>
-          <button class="add-button" type="button" data-add-to-cart="${product.id}" aria-label="Adaugă ${escapeHTML(product.name)} în coș">+</button>
+          ${product.checkoutUrl
+            ? `<a class="buy-button" href="${product.checkoutUrl}" target="_blank" rel="noopener noreferrer" aria-label="Cumpără ${escapeHTML(product.name)} prin Whop">Cumpără</a>`
+            : `<button class="add-button" type="button" data-add-to-cart="${product.id}" aria-label="Adaugă ${escapeHTML(product.name)} în coș">+</button>`}
         </div>
       </div>
     </article>`;
@@ -592,3 +594,7 @@ renderProducts();
 renderCart();
 renderAccount();
 updateAccountButton();
+
+if (window.location.hash === '#account') {
+  showLayer(accountPanel);
+}
