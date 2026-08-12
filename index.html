@@ -4,90 +4,110 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="RITM SPORT — echipament sportiv, comenzi și urmărirea livrării, cu prețuri în USD." />
-    <title>RITM SPORT — Catalog</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="theme-color" content="#2448ff" />
+    <title>RITM SPORT — Echipament în mișcare</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="RITM SPORT pagina principală">
-        <strong>RITM</strong>
-        <span>SPORT</span>
+        <span class="brand-signal" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-word"><strong>RITM</strong><small>SPORT</small></span>
       </a>
 
       <div class="header-note" aria-hidden="true">
-        <span>Selecție sport</span>
-        <i></i>
-        <span>Prețuri în USD</span>
+        <span>RUN</span><span>RIDE</span><span>MOVE</span>
       </div>
 
       <nav class="header-actions" aria-label="Acțiuni client">
         <button id="account-button" class="header-button" type="button" aria-controls="account-panel">
-          <span class="header-button-icon" aria-hidden="true">◯</span>
+          <span class="header-button-index" aria-hidden="true">01</span>
           <span id="account-button-label">Contul meu</span>
+          <span aria-hidden="true">↗</span>
         </button>
       </nav>
     </header>
 
-    <main class="catalog">
-      <div class="catalog-intro">
-        <div>
-          <span class="eyebrow">CATALOG / 2026</span>
-          <h1>Echipament care<br /><em>ține ritmul.</em></h1>
+    <main>
+      <section class="catalog-intro" aria-labelledby="catalog-title">
+        <div class="intro-rail" aria-hidden="true">
+          <span>RITM / 2026</span>
+          <span>ECHIPAMENT SELECTAT</span>
         </div>
-        <p>Produse pentru alergare, ciclism și antrenament, într-o selecție simplă și ușor de explorat.</p>
-      </div>
-
-      <div class="catalog-tools">
-        <label class="search-box">
-          <span class="visually-hidden">Caută produse</span>
-          <input id="search" type="search" placeholder="Caută produs sau brand" autocomplete="off" />
-          <span aria-hidden="true">⌕</span>
-        </label>
-
-        <div class="filters" aria-label="Filtrează produsele">
-          <button class="active" type="button" data-category="Toate">Toate</button>
-          <button type="button" data-category="Alergare">Alergare</button>
-          <button type="button" data-category="Ciclism">Ciclism</button>
-          <button type="button" data-category="Ceasuri & GPS">Ceasuri & GPS</button>
-          <button type="button" data-category="Audio">Audio</button>
-          <button type="button" data-category="Fotbal">Fotbal</button>
+        <div class="intro-copy">
+          <span class="eyebrow">MAGAZIN SPORT / PREȚURI ÎN USD</span>
+          <h1 id="catalog-title"><span>MIȘCĂ-TE.</span><em>ȚINE RITMUL.</em></h1>
+          <div class="intro-bottom">
+            <p>Selecție de echipament pentru alergare, ciclism și antrenament. Direct, rapid și fără zgomot inutil.</p>
+            <a href="#catalog-produse">Vezi selecția <span aria-hidden="true">↓</span></a>
+          </div>
         </div>
+        <div class="intro-number" aria-hidden="true">17</div>
+      </section>
+
+      <div class="motion-strip" aria-hidden="true">
+        <div><span>ALERGARE</span><i>◆</i><span>CICLISM</span><i>◆</i><span>ANTRENAMENT</span><i>◆</i><span>ECHIPAMENT</span><i>◆</i><span>ALERGARE</span><i>◆</i><span>CICLISM</span></div>
       </div>
 
-      <div class="results-row">
-        <span id="result-count">17 produse</span>
-        <span>Plata securizată prin Whop</span>
-      </div>
+      <section id="catalog-produse" class="catalog">
+        <div class="catalog-heading">
+          <span class="section-number">02</span>
+          <h2>Selecția curentă</h2>
+          <p>Filtrează după disciplină sau caută direct modelul dorit.</p>
+        </div>
 
-      <section id="product-grid" class="product-grid" aria-live="polite" aria-label="Produse"></section>
+        <div class="catalog-tools">
+          <label class="search-box">
+            <span class="search-label">CAUTĂ</span>
+            <input id="search" type="search" placeholder="Produs sau brand" autocomplete="off" />
+            <span aria-hidden="true">⌕</span>
+          </label>
 
-      <div id="empty-state" class="empty-state" hidden>
-        <strong>Niciun produs găsit.</strong>
-        <p>Încearcă alt termen sau alege categoria „Toate”.</p>
-        <button id="reset-filters" type="button">Resetează filtrele</button>
-      </div>
+          <div class="filters" aria-label="Filtrează produsele">
+            <button class="active" type="button" data-category="Toate">Toate</button>
+            <button type="button" data-category="Alergare">Alergare</button>
+            <button type="button" data-category="Ciclism">Ciclism</button>
+            <button type="button" data-category="Ceasuri & GPS">Ceasuri & GPS</button>
+            <button type="button" data-category="Audio">Audio</button>
+            <button type="button" data-category="Fotbal">Fotbal</button>
+          </div>
+        </div>
+
+        <div class="results-row">
+          <span id="result-count">17 produse</span>
+          <span>Checkout securizat / WHOP</span>
+        </div>
+
+        <section id="product-grid" class="product-grid" aria-live="polite" aria-label="Produse"></section>
+
+        <div id="empty-state" class="empty-state" hidden>
+          <span>00</span>
+          <strong>Niciun produs găsit.</strong>
+          <p>Încearcă alt termen sau alege categoria „Toate”.</p>
+          <button id="reset-filters" type="button">Resetează filtrele</button>
+        </div>
+      </section>
     </main>
 
     <section class="checkout-notice" aria-label="Informații despre comandă">
-      <strong>Cumpărare sigură</strong>
-      <p>Butonul „Cumpără” deschide pagina securizată Whop a produsului. Adresa de livrare și plata sunt introduse numai în checkout-ul Whop.</p>
+      <span class="section-number">03</span>
+      <strong>Cumpărare sigură.<br />Fără pași ascunși.</strong>
+      <p>Butonul „Cumpără” deschide checkout-ul securizat Whop al produsului. Adresa de livrare și datele cardului sunt introduse exclusiv acolo.</p>
+      <span class="notice-mark" aria-hidden="true">↗</span>
     </section>
 
     <footer class="site-footer">
       <a class="brand footer-brand" href="index.html" aria-label="RITM SPORT pagina principală">
-        <strong>RITM</strong>
-        <span>SPORT</span>
+        <span class="brand-signal" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-word"><strong>RITM</strong><small>SPORT</small></span>
       </a>
       <nav aria-label="Informații legale">
-        <a href="livrare-retur.html">Livrare și retur</a>
-        <a href="confidentialitate.html">Confidențialitate</a>
-        <a href="termeni.html">Termeni</a>
-        <a href="contact.html">Contact</a>
+        <a href="livrare-retur.html"><span>01</span>Livrare și retur</a>
+        <a href="confidentialitate.html"><span>02</span>Confidențialitate</a>
+        <a href="termeni.html"><span>03</span>Termeni</a>
+        <a href="contact.html"><span>04</span>Contact</a>
       </nav>
-      <p>Plățile sunt procesate de Whop. Prețurile sunt afișate în USD.</p>
+      <p>Plățile sunt procesate de Whop.<br />Prețurile sunt afișate în USD.</p>
     </footer>
 
     <div id="page-overlay" class="page-overlay" hidden></div>
@@ -95,7 +115,7 @@
     <aside id="account-panel" class="side-panel account-panel" aria-hidden="true" aria-labelledby="account-title" hidden>
       <div class="panel-header">
         <div>
-          <span class="eyebrow">SPAȚIUL CLIENTULUI</span>
+          <span class="eyebrow">SPAȚIUL CLIENTULUI / 01</span>
           <h2 id="account-title">Contul meu</h2>
         </div>
         <button class="icon-button" type="button" data-close-layer aria-label="Închide contul">×</button>

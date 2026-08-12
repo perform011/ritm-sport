@@ -92,11 +92,12 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-function productCard(product) {
+function productCard(product, index) {
   return `
     <article class="product-card">
       <div class="product-image">
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
+        <span class="product-index" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
         <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy" />
       </div>
       <div class="product-content">
