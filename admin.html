@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>RITM SPORT — Administrare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header admin-header">
+      <a class="brand" href="index.html" aria-label="RITM SPORT pagina principală">
+        <strong>RITM</strong><span>SPORT</span>
+      </a>
+      <div class="admin-header-actions">
+        <span class="eyebrow">ADMINISTRARE</span>
+        <button id="admin-logout" class="secondary-button" type="button" hidden>Ieși</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <section id="admin-setup" class="admin-message" hidden>
+        <h1>Supabase nu este configurat.</h1>
+        <p>Completează URL-ul proiectului și cheia publicabilă în <code>supabase-config.js</code>. Nu folosi niciodată cheia secretă sau <code>service_role</code> în site.</p>
+      </section>
+
+      <section id="admin-login" class="admin-login-card" hidden>
+        <span class="eyebrow">ACCES PROTEJAT</span>
+        <h1>Panou de administrare</h1>
+        <p>Autentifică-te cu utilizatorul marcat drept <code>admin</code> în Supabase.</p>
+        <form id="admin-login-form" class="login-form">
+          <label class="field">
+            <span>E-mail</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Parolă</span>
+            <input name="password" type="password" autocomplete="current-password" minlength="8" required />
+          </label>
+          <button class="primary-button" type="submit">Autentificare</button>
+          <p id="admin-login-error" class="tracking-error" role="alert"></p>
+        </form>
+      </section>
+
+      <section id="admin-denied" class="admin-message" hidden>
+        <h1>Acces refuzat.</h1>
+        <p>Contul este valid, dar nu are rolul <code>admin</code>.</p>
+      </section>
+
+      <section id="admin-dashboard" hidden>
+        <div class="admin-title-row">
+          <div>
+            <span class="eyebrow">SUPABASE + WHOP</span>
+            <h1>Comenzi și catalog</h1>
+          </div>
+          <button id="admin-refresh" class="secondary-button" type="button">Actualizează</button>
+        </div>
+
+        <div class="admin-stats">
+          <article><span>Comenzi</span><strong id="stat-orders">0</strong></article>
+          <article><span>De procesat</span><strong id="stat-processing">0</strong></article>
+          <article><span>Produse active</span><strong id="stat-products">0</strong></article>
+          <article><span>Venit înregistrat</span><strong id="stat-revenue">$0.00</strong></article>
+        </div>
+
+        <section class="admin-section">
+          <div class="admin-section-title">
+            <h2>Comenzi Whop</h2>
+            <p>Datele apar după ce webhook-ul <code>payment.succeeded</code> este activ.</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr><th>Comandă</th><th>Client</th><th>Produs</th><th>Total</th><th>Livrare</th><th>Status</th><th>Urmărire</th><th></th></tr>
+              </thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+          <p id="orders-empty" class="admin-empty" hidden>Nu există încă plăți sincronizate.</p>
+        </section>
+
+        <section class="admin-section">
+          <div class="admin-section-title">
+            <h2>Catalogul site-ului</h2>
+            <p>Prețul Whop trebuie modificat separat în Whop Dashboard.</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr><th>Produs</th><th>Categorie</th><th>Preț site</th><th>Activ</th><th>Whop</th><th></th></tr>
+              </thead>
+              <tbody id="products-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <p id="admin-feedback" class="admin-feedback" role="status"></p>
+      </section>
+    </main>
+
+    <script src="supabase-config.js"></script>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

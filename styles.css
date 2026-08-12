@@ -893,3 +893,68 @@ h1 em {
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* Supabase administration */
+.admin-page { min-height: 100vh; background: #f4f4ee; }
+.admin-header { position: sticky; top: 0; z-index: 10; }
+.admin-header-actions { display: flex; align-items: center; gap: 16px; }
+.admin-header-actions .secondary-button { width: auto; min-height: 40px; padding: 0 18px; }
+.admin-main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; padding: 56px 0 96px; }
+.admin-login-card,
+.admin-message { width: min(520px, 100%); margin: 7vh auto 0; padding: 34px; border: 1px solid var(--line); background: var(--white); }
+.admin-login-card h1,
+.admin-message h1 { margin: 12px 0 8px; font-size: clamp(30px, 4vw, 48px); line-height: 1; }
+.admin-login-card > p,
+.admin-message > p { margin: 0 0 24px; color: var(--muted); line-height: 1.6; }
+.admin-title-row,
+.admin-section-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.admin-title-row { margin-bottom: 28px; }
+.admin-title-row h1 { margin: 8px 0 0; font-size: clamp(36px, 5vw, 66px); line-height: 0.95; }
+.admin-title-row .secondary-button { width: auto; }
+.admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--white); }
+.admin-stats article { min-height: 132px; padding: 24px; border-right: 1px solid var(--line); display: grid; align-content: space-between; }
+.admin-stats article:last-child { border-right: 0; }
+.admin-stats span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+.admin-stats strong { font-size: clamp(28px, 4vw, 44px); }
+.admin-section { margin-top: 42px; }
+.admin-section-title { margin-bottom: 15px; }
+.admin-section-title h2 { margin: 0; font-size: 26px; }
+.admin-section-title p { margin: 0; color: var(--muted); font-size: 13px; }
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--white); }
+.admin-table { width: 100%; min-width: 980px; border-collapse: collapse; }
+.admin-table th,
+.admin-table td { padding: 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+.admin-table th { background: #efefe8; color: var(--muted); font: 500 11px/1.2 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table td > strong,
+.admin-table td > small { display: block; }
+.admin-table td > small { margin-top: 4px; color: var(--muted); }
+.admin-details summary { cursor: pointer; font-weight: 700; }
+.admin-details[open] { min-width: 220px; }
+.admin-details small { display: block; max-width: 300px; margin-top: 4px; color: var(--muted); white-space: normal; }
+.admin-table input[type='text'],
+.admin-table input[type='number'],
+.admin-table select { min-width: 120px; padding: 10px; border: 1px solid var(--line); background: var(--white); }
+.admin-table input[type='checkbox'] { width: 20px; height: 20px; accent-color: var(--lime); }
+.admin-table a { color: var(--ink); font-weight: 700; }
+.admin-save { width: auto; min-height: 38px; padding: 0 14px; }
+.admin-empty,
+.admin-feedback { padding: 14px 0; color: var(--muted); }
+.admin-feedback.error { color: #a31616; }
+.admin-message code,
+.admin-section-title code { padding: 2px 5px; background: #e8e8e1; }
+
+@media (max-width: 900px) {
+  .admin-stats { grid-template-columns: repeat(2, 1fr); }
+  .admin-stats article:nth-child(2) { border-right: 0; }
+  .admin-stats article:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+
+@media (max-width: 640px) {
+  .admin-main { width: min(100% - 28px, 1440px); padding-top: 32px; }
+  .admin-header .eyebrow { display: none; }
+  .admin-stats { grid-template-columns: 1fr; }
+  .admin-stats article { border-right: 0; border-bottom: 1px solid var(--line); }
+  .admin-stats article:last-child { border-bottom: 0; }
+  .admin-section-title { align-items: flex-start; flex-direction: column; }
+}

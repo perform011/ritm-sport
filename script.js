@@ -1,4 +1,6 @@
-const products = [
+import { getSupabaseClient, isSupabaseConfigured } from './supabase-client.js';
+
+let products = [
   { id: 'garmin-170', name: 'Ceas Garmin Forerunner 170 Music', brand: 'GARMIN', category: 'Ceasuri & GPS', price: 389.76, oldPrice: 487.20, image: 'public/products/garmin-170.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/ceas-garmin-forerunner-170-music/' },
   { id: 'hoka-skyward', name: 'Pantofi alergare damă Hoka Skyward X 2', brand: 'HOKA', category: 'Alergare', price: 262.53, oldPrice: 328.16, image: 'public/products/hoka-skyward.webp', badge: '−20%', checkoutUrl: 'https://whop.com/ritm-sport/pantofi-alergare-dama-hoka-skyward-x-2/' },
   { id: 'hoka-zinal', name: 'Pantofi alergare trail damă Hoka Zinal 3', brand: 'HOKA', category: 'Alergare', price: 136.60, oldPrice: 181.92, image: 'public/products/hoka-zinal.webp', badge: '−25%', checkoutUrl: 'https://whop.com/ritm-sport/pantofi-alergare-trail-dama-hoka-zinal-3/' },
@@ -75,8 +77,10 @@ function saveJSON(key, value) {
 }
 
 let cart = loadJSON(STORAGE_KEYS.cart, []).filter((item) => products.some((product) => product.id === item.productId));
-let customer = loadJSON(STORAGE_KEYS.customer, null);
-let orders = loadJSON(STORAGE_KEYS.orders, []);
+let customer = isSupabaseConfigured ? null : loadJSON(STORAGE_KEYS.customer, null);
+let orders = isSupabaseConfigured ? [] : loadJSON(STORAGE_KEYS.orders, []);
+let accountOrders = [];
+let supabaseClient = null;
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>'"]/g, (character) => ({
@@ -108,12 +112,12 @@ function productCard(product) {
     <article class="product-card">
       <div class="product-image">
         ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
-        <img src="${product.image}" alt="${escapeHTML(product.name)}" loading="lazy" />
+        <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy" />
       </div>
       <div class="product-content">
         <div class="product-meta">
-          <span>${product.brand}</span>
-          <span>${product.category}</span>
+          <span>${escapeHTML(product.brand)}</span>
+          <span>${escapeHTML(product.category)}</span>
         </div>
         <h2>${escapeHTML(product.name)}</h2>
         <div class="product-actions">
@@ -122,8 +126,8 @@ function productCard(product) {
             ${product.oldPrice ? `<s>${formatMoney(product.oldPrice)}</s>` : ''}
           </div>
           ${product.checkoutUrl
-            ? `<a class="buy-button" href="${product.checkoutUrl}" target="_blank" rel="noopener noreferrer" aria-label="Cumpără ${escapeHTML(product.name)} prin Whop">Cumpără</a>`
-            : `<button class="add-button" type="button" data-add-to-cart="${product.id}" aria-label="Adaugă ${escapeHTML(product.name)} în coș">+</button>`}
+            ? `<a class="buy-button" href="${escapeHTML(product.checkoutUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Cumpără ${escapeHTML(product.name)} prin Whop">Cumpără</a>`
+            : `<button class="add-button" type="button" data-add-to-cart="${escapeHTML(product.id)}" aria-label="Adaugă ${escapeHTML(product.name)} în coș">+</button>`}
         </div>
       </div>
     </article>`;
@@ -258,6 +262,7 @@ function normalizeEmail(email) {
 
 function customerOrders() {
   if (!customer) return [];
+  if (supabaseClient) return accountOrders;
   const email = normalizeEmail(customer.email);
   return orders.filter((order) => normalizeEmail(order.customerEmail) === email);
 }
@@ -319,7 +324,9 @@ function ensureDemoOrders() {
 
 function orderCard(order, compact = false) {
   const statusIndex = Math.max(0, Math.min(Number(order.statusIndex) || 0, orderStatuses.length - 1));
-  const delivered = statusIndex === orderStatuses.length - 1;
+  const delivered = order.statusKey ? order.statusKey === 'delivered' : statusIndex === orderStatuses.length - 1;
+  const terminal = ['refunded', 'cancelled'].includes(order.statusKey);
+  const statusLabel = order.statusLabel || orderStatuses[statusIndex];
   const progress = (statusIndex / (orderStatuses.length - 1)) * 100;
   const items = Array.isArray(order.items) ? order.items : [];
 
@@ -332,7 +339,7 @@ function orderCard(order, compact = false) {
         </div>
         <div class="order-total">
           <strong>${formatMoney(order.total)}</strong>
-          <span class="status-pill${delivered ? ' delivered' : ''}">${orderStatuses[statusIndex]}</span>
+          <span class="status-pill${delivered ? ' delivered' : ''}">${escapeHTML(statusLabel)}</span>
         </div>
       </div>
       <div class="order-products">
@@ -352,7 +359,11 @@ function orderCard(order, compact = false) {
         <div class="progress-labels">
           ${orderStatuses.map((status) => `<span>${status}</span>`).join('')}
         </div>
-        <p class="delivery-note">${delivered ? escapeHTML(order.expectedDelivery) : `Livrare estimată: <strong>${escapeHTML(order.expectedDelivery)}</strong>`}</p>
+        <p class="delivery-note">${terminal
+          ? escapeHTML(statusLabel)
+          : delivered
+            ? escapeHTML(order.expectedDelivery)
+            : `Livrare estimată: <strong>${escapeHTML(order.expectedDelivery || 'în curs de confirmare')}</strong>`}</p>
       </div>
     </article>`;
 }
@@ -366,6 +377,71 @@ function updateAccountButton() {
 }
 
 function renderLogin() {
+  if (isSupabaseConfigured) {
+    accountContent.innerHTML = `
+      <div class="login-view">
+        <h3>Contul tău RITM.</h3>
+        <p>Autentifică-te pentru a vedea comenzile plătite prin Whop și starea livrării.</p>
+        <form id="login-form" class="login-form">
+          <label class="field">
+            <span>Nume</span>
+            <input name="name" type="text" autocomplete="name" placeholder="Necesar la crearea contului" />
+          </label>
+          <label class="field">
+            <span>E-mail</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Parolă</span>
+            <input name="password" type="password" autocomplete="current-password" minlength="8" required />
+          </label>
+          <div class="auth-actions">
+            <button class="primary-button" type="submit" name="action" value="login">Intră în cont</button>
+            <button class="secondary-button" type="submit" name="action" value="signup">Creează cont</button>
+          </div>
+          <p id="auth-feedback" class="form-disclaimer" role="status">Datele de autentificare sunt gestionate securizat de Supabase.</p>
+        </form>
+      </div>`;
+
+    document.querySelector('#login-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const action = event.submitter?.value || 'login';
+      const email = normalizeEmail(formData.get('email'));
+      const password = String(formData.get('password'));
+      const name = String(formData.get('name')).trim();
+      const feedback = document.querySelector('#auth-feedback');
+      feedback.textContent = 'Se procesează…';
+
+      if (!supabaseClient) {
+        feedback.textContent = 'Conexiunea Supabase nu este disponibilă.';
+        return;
+      }
+
+      if (action === 'signup') {
+        if (!name) {
+          feedback.textContent = 'Introdu numele pentru a crea un cont.';
+          return;
+        }
+        const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password,
+          options: { data: { full_name: name } }
+        });
+        feedback.textContent = error
+          ? 'Contul nu a putut fi creat. Verifică datele.'
+          : data.session
+            ? 'Cont creat. Ești autentificat.'
+            : 'Verifică e-mailul și confirmă adresa pentru a activa contul.';
+        return;
+      }
+
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      feedback.textContent = error ? 'E-mail sau parolă incorectă.' : 'Autentificare reușită.';
+    });
+    return;
+  }
+
   accountContent.innerHTML = `
     <div class="login-view">
       <h3>Bine ai revenit.</h3>
@@ -458,7 +534,11 @@ function renderAccount() {
       </section>
     </div>`;
 
-  document.querySelector('#logout-button').addEventListener('click', () => {
+  document.querySelector('#logout-button').addEventListener('click', async () => {
+    if (supabaseClient) {
+      await supabaseClient.auth.signOut();
+      return;
+    }
     customer = null;
     try {
       localStorage.removeItem(STORAGE_KEYS.customer);
@@ -552,6 +632,106 @@ function placeOrder(event) {
   showToast(`Comanda ${order.id} a fost plasată.`);
 }
 
+function mapDatabaseProduct(product) {
+  return {
+    id: product.id,
+    name: product.name,
+    brand: product.brand,
+    category: product.category,
+    price: Number(product.price),
+    oldPrice: product.old_price === null ? null : Number(product.old_price),
+    image: product.image,
+    badge: product.badge,
+    checkoutUrl: product.checkout_url
+  };
+}
+
+const databaseStatus = {
+  paid: { index: 0, label: 'Comandă plătită' },
+  processing: { index: 1, label: 'În procesare' },
+  shipped: { index: 2, label: 'În tranzit' },
+  delivered: { index: 3, label: 'Livrată' },
+  refunded: { index: 0, label: 'Rambursată' },
+  cancelled: { index: 0, label: 'Anulată' }
+};
+
+function mapDatabaseOrder(order) {
+  const state = databaseStatus[order.status] || databaseStatus.paid;
+  const expectedDelivery = order.tracking_number
+    ? `AWB: ${order.tracking_number}`
+    : order.expected_delivery
+      ? new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${order.expected_delivery}T12:00:00`))
+      : 'în curs de confirmare';
+
+  return {
+    id: order.order_number,
+    createdAt: order.created_at,
+    customerEmail: order.customer_email,
+    items: Array.isArray(order.items) ? order.items : [],
+    subtotal: Number(order.subtotal),
+    shipping: 0,
+    total: Number(order.total),
+    statusIndex: state.index,
+    statusKey: order.status,
+    statusLabel: state.label,
+    expectedDelivery
+  };
+}
+
+async function loadSupabaseProducts() {
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('id,name,brand,category,price,old_price,image,badge,checkout_url')
+    .eq('active', true)
+    .order('sort_order', { ascending: true });
+
+  if (error || !data?.length) return;
+  products = data.map(mapDatabaseProduct);
+  cart = cart.filter((item) => products.some((product) => product.id === item.productId));
+  renderProducts();
+  renderCart();
+}
+
+async function applySupabaseSession(session) {
+  if (!session?.user) {
+    customer = null;
+    accountOrders = [];
+    updateAccountButton();
+    renderAccount();
+    return;
+  }
+
+  const [{ data: profile }, { data: databaseOrders, error: ordersError }] = await Promise.all([
+    supabaseClient.from('profiles').select('full_name').eq('id', session.user.id).maybeSingle(),
+    supabaseClient.from('orders').select('*').order('created_at', { ascending: false })
+  ]);
+
+  customer = {
+    name: profile?.full_name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Client',
+    email: session.user.email || ''
+  };
+  accountOrders = ordersError ? [] : (databaseOrders || []).map(mapDatabaseOrder);
+  updateAccountButton();
+  renderAccount();
+}
+
+async function initializeSupabase() {
+  if (!isSupabaseConfigured) return;
+
+  try {
+    supabaseClient = await getSupabaseClient();
+    await loadSupabaseProducts();
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    await applySupabaseSession(session);
+    supabaseClient.auth.onAuthStateChange((_event, nextSession) => {
+      window.setTimeout(() => applySupabaseSession(nextSession), 0);
+    });
+  } catch (error) {
+    console.error('Supabase initialization failed', error);
+    showToast('Conexiunea cu baza de date nu este disponibilă. Catalogul local rămâne activ.');
+  }
+}
+
 filterButtons.forEach((button) => {
   button.addEventListener('click', () => {
     activeCategory = button.dataset.category;
@@ -605,6 +785,7 @@ renderProducts();
 renderCart();
 renderAccount();
 updateAccountButton();
+initializeSupabase();
 
 if (window.location.hash === '#account') {
   showLayer(accountPanel);

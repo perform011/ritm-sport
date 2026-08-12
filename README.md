@@ -1,29 +1,38 @@
 # RITM SPORT
 
-Magazin sportiv static în limba română, fără framework și fără etapă de build.
+Magazin sportiv static în limba română, publicat pe GitHub Pages la `https://ritmsport.shop`.
 
 ## Funcții
 
-- catalog cu 17 produse și prețuri în USD;
+- catalog cu 17 produse și checkout extern Whop;
 - căutare și filtrare după categorie;
-- coș cu cantități și calculul livrării;
-- formular demonstrativ de comandă;
-- cont local de client;
-- comenzi curente, istoric și urmărire după numărul comenzii.
-- plată externă prin Whop pentru produsul Oakley Icon Training.
+- autentificare reală a clienților prin Supabase Auth;
+- comenzi Whop sincronizate automat printr-un webhook verificat;
+- comenzi curente, istoric și urmărirea livrării;
+- panou protejat pentru administrare la `/admin.html`;
+- reguli Row Level Security: clientul vede doar comenzile asociate e-mailului său.
 
-Datele contului, coșului și comenzilor sunt salvate în `localStorage`, numai în browserul curent. Parola nu este salvată, iar plata nu este procesată. Pentru conturi reale și sincronizare între dispozitive este necesar un backend cu bază de date.
+Fără configurarea Supabase, catalogul și checkout-ul Whop continuă să funcționeze, iar contul rămâne în modul demonstrativ local.
+
+## Fișiere Supabase
+
+- `supabase/schema.sql` — tabele, politici RLS și catalogul inițial;
+- `supabase/functions/whop-webhook/index.ts` — primește `payment.succeeded` de la Whop;
+- `supabase-config.js` — URL-ul și cheia publicabilă folosite în browser;
+- `SUPABASE_SETUP.md` — instalare pas cu pas.
+
+Cheile `WHOP_API_KEY`, `WHOP_WEBHOOK_SECRET` și cheia secretă Supabase nu trebuie publicate niciodată în GitHub sau în codul browserului.
 
 ## Pornire locală
 
-Deschide `index.html` direct sau pornește un server static:
+Fișierele care folosesc module JavaScript trebuie deschise printr-un server local:
 
-```bash
+```powershell
 python -m http.server 3000
 ```
 
 Apoi deschide `http://localhost:3000`.
 
-## GitHub Pages
+## Publicare
 
-Încarcă toate fișierele în rădăcina repository-ului și activează Pages pentru branch-ul principal, directorul `/ (root)`. Nu este necesară nicio comandă de build.
+GitHub Pages publică branch-ul `main`, directorul `/ (root)`. Nu există etapă de build.
