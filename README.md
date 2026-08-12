@@ -4,13 +4,16 @@ Magazin sportiv static în limba română, publicat pe GitHub Pages la `https://
 
 ## Funcții
 
-- catalog cu 17 produse și checkout extern Whop;
+- catalog cu 17 produse și cumpărare directă prin checkout-ul extern Whop;
 - căutare și filtrare după categorie;
 - autentificare reală a clienților prin Supabase Auth;
 - comenzi Whop sincronizate automat printr-un webhook verificat;
 - comenzi curente, istoric și urmărirea livrării;
 - panou protejat pentru administrare la `/admin.html`;
 - reguli Row Level Security: clientul vede doar comenzile asociate e-mailului său.
+- pagini publice pentru termeni, confidențialitate, livrare, retur și contact.
+
+Coșul și formularul demonstrativ de plată au fost eliminate. Fiecare buton `Cumpără` deschide pagina Whop a produsului; site-ul nu colectează date de card.
 
 Fără configurarea Supabase, catalogul și checkout-ul Whop continuă să funcționeze, iar contul rămâne în modul demonstrativ local.
 

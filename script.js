@@ -21,14 +21,11 @@ let products = [
 ];
 
 const STORAGE_KEYS = {
-  cart: 'ritm-sport-cart',
   customer: 'ritm-sport-customer',
   orders: 'ritm-sport-orders'
 };
 
 const orderStatuses = ['Comandă plasată', 'Confirmată', 'În tranzit', 'Livrată'];
-const shippingPrice = 12.90;
-const freeShippingFrom = 150;
 
 const grid = document.querySelector('#product-grid');
 const search = document.querySelector('#search');
@@ -37,23 +34,12 @@ const emptyState = document.querySelector('#empty-state');
 const resetButton = document.querySelector('#reset-filters');
 const filterButtons = [...document.querySelectorAll('[data-category]')];
 const pageOverlay = document.querySelector('#page-overlay');
-const cartPanel = document.querySelector('#cart-panel');
 const accountPanel = document.querySelector('#account-panel');
-const checkoutModal = document.querySelector('#checkout-modal');
-const cartButton = document.querySelector('#cart-button');
 const accountButton = document.querySelector('#account-button');
 const accountButtonLabel = document.querySelector('#account-button-label');
-const cartCount = document.querySelector('#cart-count');
-const cartItems = document.querySelector('#cart-items');
-const cartSubtotal = document.querySelector('#cart-subtotal');
-const cartShipping = document.querySelector('#cart-shipping');
-const cartTotal = document.querySelector('#cart-total');
-const checkoutButton = document.querySelector('#checkout-button');
-const checkoutForm = document.querySelector('#checkout-form');
-const checkoutTotal = document.querySelector('#checkout-total');
 const accountContent = document.querySelector('#account-content');
 const toast = document.querySelector('#toast');
-const layers = [cartPanel, accountPanel, checkoutModal];
+const layers = [accountPanel];
 
 let activeCategory = 'Toate';
 let toastTimer;
@@ -76,7 +62,6 @@ function saveJSON(key, value) {
   }
 }
 
-let cart = loadJSON(STORAGE_KEYS.cart, []).filter((item) => products.some((product) => product.id === item.productId));
 let customer = isSupabaseConfigured ? null : loadJSON(STORAGE_KEYS.customer, null);
 let orders = isSupabaseConfigured ? [] : loadJSON(STORAGE_KEYS.orders, []);
 let accountOrders = [];
@@ -127,7 +112,7 @@ function productCard(product) {
           </div>
           ${product.checkoutUrl
             ? `<a class="buy-button" href="${escapeHTML(product.checkoutUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Cumpără ${escapeHTML(product.name)} prin Whop">Cumpără</a>`
-            : `<button class="add-button" type="button" data-add-to-cart="${escapeHTML(product.id)}" aria-label="Adaugă ${escapeHTML(product.name)} în coș">+</button>`}
+            : '<span class="unavailable-label">Indisponibil</span>'}
         </div>
       </div>
     </article>`;
@@ -144,86 +129,6 @@ function renderProducts() {
   grid.innerHTML = filtered.map(productCard).join('');
   count.textContent = `${filtered.length} ${filtered.length === 1 ? 'produs' : 'produse'}`;
   emptyState.hidden = filtered.length !== 0;
-}
-
-function getCartTotals() {
-  const subtotal = cart.reduce((sum, item) => {
-    const product = products.find((entry) => entry.id === item.productId);
-    return sum + (product ? product.price * item.quantity : 0);
-  }, 0);
-  const shipping = subtotal === 0 || subtotal >= freeShippingFrom ? 0 : shippingPrice;
-  return { subtotal, shipping, total: subtotal + shipping };
-}
-
-function updateCartSummary() {
-  const numberOfItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totals = getCartTotals();
-  cartCount.textContent = numberOfItems;
-  cartCount.setAttribute('aria-label', `${numberOfItems} produse în coș`);
-  cartSubtotal.textContent = formatMoney(totals.subtotal);
-  cartShipping.textContent = totals.subtotal === 0 ? '—' : totals.shipping === 0 ? 'Gratuită' : formatMoney(totals.shipping);
-  cartTotal.textContent = formatMoney(totals.total);
-  checkoutTotal.textContent = formatMoney(totals.total);
-  checkoutButton.disabled = cart.length === 0;
-}
-
-function renderCart() {
-  if (cart.length === 0) {
-    cartItems.innerHTML = `
-      <div class="cart-empty">
-        <span aria-hidden="true">◎</span>
-        <strong>Coșul este gol</strong>
-        <p>Adaugă produsele preferate, apoi revino aici pentru a finaliza comanda.</p>
-      </div>`;
-    updateCartSummary();
-    return;
-  }
-
-  cartItems.innerHTML = cart.map((item) => {
-    const product = products.find((entry) => entry.id === item.productId);
-    if (!product) return '';
-    return `
-      <article class="cart-item">
-        <div class="cart-item-image"><img src="${product.image}" alt="" /></div>
-        <div class="cart-item-info">
-          <h3>${escapeHTML(product.name)}</h3>
-          <span>${formatMoney(product.price * item.quantity)}</span>
-          <div class="quantity-control" aria-label="Cantitate">
-            <button type="button" data-cart-action="decrease" data-product-id="${product.id}" aria-label="Scade cantitatea">−</button>
-            <span>${item.quantity}</span>
-            <button type="button" data-cart-action="increase" data-product-id="${product.id}" aria-label="Mărește cantitatea">+</button>
-          </div>
-        </div>
-        <button class="remove-button" type="button" data-cart-action="remove" data-product-id="${product.id}">Șterge</button>
-      </article>`;
-  }).join('');
-  updateCartSummary();
-}
-
-function addToCart(productId) {
-  const existing = cart.find((item) => item.productId === productId);
-  if (existing) {
-    existing.quantity = Math.min(existing.quantity + 1, 10);
-  } else {
-    cart.push({ productId, quantity: 1 });
-  }
-  saveJSON(STORAGE_KEYS.cart, cart);
-  renderCart();
-  showToast('Produsul a fost adăugat în coș.');
-}
-
-function changeCart(productId, action) {
-  const item = cart.find((entry) => entry.productId === productId);
-  if (!item) return;
-
-  if (action === 'increase') item.quantity = Math.min(item.quantity + 1, 10);
-  if (action === 'decrease') item.quantity -= 1;
-  if (action === 'remove' || item.quantity <= 0) {
-    cart = cart.filter((entry) => entry.productId !== productId);
-  }
-
-  saveJSON(STORAGE_KEYS.cart, cart);
-  renderCart();
 }
 
 function showLayer(layer) {
@@ -562,76 +467,6 @@ function renderAccount() {
   });
 }
 
-function openCheckout() {
-  if (cart.length === 0) return;
-  const nameInput = document.querySelector('#checkout-name');
-  const emailInput = document.querySelector('#checkout-email');
-  nameInput.value = customer?.name || '';
-  emailInput.value = customer?.email || '';
-  updateCartSummary();
-  showLayer(checkoutModal);
-}
-
-function expectedDeliveryDate() {
-  const date = new Date();
-  date.setDate(date.getDate() + 4);
-  return new Intl.DateTimeFormat('ro-RO', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  }).format(date);
-}
-
-function placeOrder(event) {
-  event.preventDefault();
-  if (cart.length === 0) return;
-
-  const formData = new FormData(event.currentTarget);
-  const totals = getCartTotals();
-  customer = {
-    name: String(formData.get('name')).trim(),
-    email: normalizeEmail(formData.get('email'))
-  };
-  saveJSON(STORAGE_KEYS.customer, customer);
-
-  const order = {
-    id: createUniqueOrderCode(),
-    createdAt: new Date().toISOString(),
-    customerEmail: customer.email,
-    customerName: customer.name,
-    phone: String(formData.get('phone')).trim(),
-    address: String(formData.get('address')).trim(),
-    city: String(formData.get('city')).trim(),
-    postalCode: String(formData.get('postalCode')).trim(),
-    payment: String(formData.get('payment')),
-    items: cart.map((item) => {
-      const product = products.find((entry) => entry.id === item.productId);
-      return {
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: item.quantity
-      };
-    }),
-    subtotal: totals.subtotal,
-    shipping: totals.shipping,
-    total: totals.total,
-    statusIndex: 0,
-    expectedDelivery: expectedDeliveryDate()
-  };
-
-  orders.unshift(order);
-  cart = [];
-  saveJSON(STORAGE_KEYS.orders, orders);
-  saveJSON(STORAGE_KEYS.cart, cart);
-  event.currentTarget.reset();
-  renderCart();
-  renderAccount();
-  updateAccountButton();
-  showLayer(accountPanel);
-  showToast(`Comanda ${order.id} a fost plasată.`);
-}
-
 function mapDatabaseProduct(product) {
   return {
     id: product.id,
@@ -687,9 +522,7 @@ async function loadSupabaseProducts() {
 
   if (error || !data?.length) return;
   products = data.map(mapDatabaseProduct);
-  cart = cart.filter((item) => products.some((product) => product.id === item.productId));
   renderProducts();
-  renderCart();
 }
 
 async function applySupabaseSession(session) {
@@ -749,28 +582,11 @@ resetButton.addEventListener('click', () => {
   renderProducts();
 });
 
-grid.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-add-to-cart]');
-  if (button) addToCart(button.dataset.addToCart);
-});
-
-cartItems.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-cart-action]');
-  if (button) changeCart(button.dataset.productId, button.dataset.cartAction);
-});
-
-cartButton.addEventListener('click', () => {
-  renderCart();
-  showLayer(cartPanel);
-});
-
 accountButton.addEventListener('click', () => {
   renderAccount();
   showLayer(accountPanel);
 });
 
-checkoutButton.addEventListener('click', openCheckout);
-checkoutForm.addEventListener('submit', placeOrder);
 pageOverlay.addEventListener('click', closeLayers);
 
 document.querySelectorAll('[data-close-layer]').forEach((button) => {
@@ -782,7 +598,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 renderProducts();
-renderCart();
 renderAccount();
 updateAccountButton();
 initializeSupabase();

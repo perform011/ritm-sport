@@ -958,3 +958,47 @@ h1 em {
   .admin-stats article:last-child { border-bottom: 0; }
   .admin-section-title { align-items: flex-start; flex-direction: column; }
 }
+
+/* Direct Whop checkout and public information */
+.unavailable-label {
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.checkout-notice {
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: minmax(160px, .5fr) minmax(280px, 1.5fr);
+  gap: 26px;
+  border-top: 1px solid var(--ink);
+  background: var(--lime);
+}
+
+.checkout-notice strong { font-size: 22px; }
+.checkout-notice p { max-width: 720px; margin: 0; line-height: 1.6; }
+
+.site-footer {
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  border-top: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.footer-brand { width: fit-content; }
+.site-footer nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; }
+.site-footer nav a { color: var(--ink); font-size: 12px; font-weight: 700; }
+.site-footer p { max-width: 230px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; text-align: right; }
+
+@media (max-width: 700px) {
+  .checkout-notice { grid-template-columns: 1fr; padding: 24px 18px; }
+  .site-footer { grid-template-columns: 1fr; padding: 30px 18px; }
+  .site-footer nav { justify-content: flex-start; }
+  .site-footer p { text-align: left; }
+}

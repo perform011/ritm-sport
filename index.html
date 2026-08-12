@@ -28,10 +28,6 @@
           <span class="header-button-icon" aria-hidden="true">◯</span>
           <span id="account-button-label">Contul meu</span>
         </button>
-        <button id="cart-button" class="header-button cart-button" type="button" aria-controls="cart-panel">
-          <span>Coș</span>
-          <strong id="cart-count" aria-label="0 produse în coș">0</strong>
-        </button>
       </nav>
     </header>
 
@@ -63,7 +59,7 @@
 
       <div class="results-row">
         <span id="result-count">17 produse</span>
-        <span>Livrare gratuită de la $150</span>
+        <span>Plata securizată prin Whop</span>
       </div>
 
       <section id="product-grid" class="product-grid" aria-live="polite" aria-label="Produse"></section>
@@ -75,25 +71,26 @@
       </div>
     </main>
 
-    <div id="page-overlay" class="page-overlay" hidden></div>
+    <section class="checkout-notice" aria-label="Informații despre comandă">
+      <strong>Cumpărare sigură</strong>
+      <p>Butonul „Cumpără” deschide pagina securizată Whop a produsului. Adresa de livrare și plata sunt introduse numai în checkout-ul Whop.</p>
+    </section>
 
-    <aside id="cart-panel" class="side-panel" aria-hidden="true" aria-labelledby="cart-title" hidden>
-      <div class="panel-header">
-        <div>
-          <span class="eyebrow">CUMPĂRĂTURI</span>
-          <h2 id="cart-title">Coșul tău</h2>
-        </div>
-        <button class="icon-button" type="button" data-close-layer aria-label="Închide coșul">×</button>
-      </div>
-      <div id="cart-items" class="cart-items"></div>
-      <div class="cart-footer">
-        <div class="summary-row"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div>
-        <div class="summary-row"><span>Livrare</span><strong id="cart-shipping">—</strong></div>
-        <div class="summary-row summary-total"><span>Total</span><strong id="cart-total">$0.00</strong></div>
-        <button id="checkout-button" class="primary-button" type="button">Finalizează comanda</button>
-        <p class="panel-note">Livrare gratuită pentru comenzi de minimum $150.</p>
-      </div>
-    </aside>
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="index.html" aria-label="RITM SPORT pagina principală">
+        <strong>RITM</strong>
+        <span>SPORT</span>
+      </a>
+      <nav aria-label="Informații legale">
+        <a href="livrare-retur.html">Livrare și retur</a>
+        <a href="confidentialitate.html">Confidențialitate</a>
+        <a href="termeni.html">Termeni</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <p>Plățile sunt procesate de Whop. Prețurile sunt afișate în USD.</p>
+    </footer>
+
+    <div id="page-overlay" class="page-overlay" hidden></div>
 
     <aside id="account-panel" class="side-panel account-panel" aria-hidden="true" aria-labelledby="account-title" hidden>
       <div class="panel-header">
@@ -105,61 +102,6 @@
       </div>
       <div id="account-content" class="account-content"></div>
     </aside>
-
-    <section id="checkout-modal" class="modal-shell" role="dialog" aria-modal="true" aria-labelledby="checkout-title" hidden>
-      <div class="modal-card">
-        <div class="panel-header">
-          <div>
-            <span class="eyebrow">ULTIMUL PAS</span>
-            <h2 id="checkout-title">Date de livrare</h2>
-          </div>
-          <button class="icon-button" type="button" data-close-layer aria-label="Închide formularul">×</button>
-        </div>
-
-        <form id="checkout-form" class="checkout-form">
-          <div class="form-grid">
-            <label class="field field-wide">
-              <span>Nume complet</span>
-              <input id="checkout-name" name="name" type="text" autocomplete="name" required />
-            </label>
-            <label class="field">
-              <span>E-mail</span>
-              <input id="checkout-email" name="email" type="email" autocomplete="email" required />
-            </label>
-            <label class="field">
-              <span>Telefon</span>
-              <input name="phone" type="tel" autocomplete="tel" required />
-            </label>
-            <label class="field field-wide">
-              <span>Adresă</span>
-              <input name="address" type="text" autocomplete="street-address" required />
-            </label>
-            <label class="field">
-              <span>Oraș</span>
-              <input name="city" type="text" autocomplete="address-level2" required />
-            </label>
-            <label class="field">
-              <span>Cod poștal</span>
-              <input name="postalCode" type="text" autocomplete="postal-code" required />
-            </label>
-            <label class="field field-wide">
-              <span>Metodă de plată</span>
-              <select name="payment" required>
-                <option value="Card online">Card online</option>
-                <option value="Plata la livrare">Plata la livrare</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="checkout-summary">
-            <span>Total comandă</span>
-            <strong id="checkout-total">$0.00</strong>
-          </div>
-          <button class="primary-button" type="submit">Plasează comanda</button>
-          <p class="form-disclaimer">Versiune demonstrativă: comanda este salvată numai pe acest dispozitiv, iar plata nu este procesată.</p>
-        </form>
-      </div>
-    </section>
 
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
