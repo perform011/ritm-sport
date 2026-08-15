@@ -19,7 +19,7 @@ Imaginile sunt originale, generate fără sigle sau mărci terțe. Folosește de
 - **Purchase button text:** Order now
 - **Product tax code:** Clothing Athletic
 - **Add affiliate rate:** dezactivat
-- **Checkout redirect:** activat → `https://perform011.github.io/ritm-sport/success.html`
+- **Checkout redirect:** activat → `https://ritmsport.site/success.html`
 - **Visible on your store page:** dezactivat
 - **Apps:** nu adăuga nicio aplicație
 

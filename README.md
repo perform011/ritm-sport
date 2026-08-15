@@ -1,6 +1,6 @@
 # RITM SPORT
 
-Magazin sportiv static în limba română, publicat pe GitHub Pages la `https://ritmsport.shop`.
+Magazin sportiv static în limba română, publicat pe GitHub Pages la `https://ritmsport.site`.
 
 ## Funcții
 

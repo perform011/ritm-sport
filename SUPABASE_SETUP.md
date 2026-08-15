@@ -36,13 +36,13 @@ window.RITM_SUPABASE_CONFIG = {
 ## 4. Настроить регистрацию
 
 1. Откройте **Authentication** → **URL Configuration**.
-2. В **Site URL** укажите `https://ritmsport.shop`.
-3. В **Redirect URLs** добавьте `https://ritmsport.shop/**`.
+2. В **Site URL** укажите `https://ritmsport.site`.
+3. В **Redirect URLs** добавьте `https://ritmsport.site/**`.
 4. В **Authentication** → **Providers** → **Email** оставьте регистрацию по e-mail включённой и включите подтверждение e-mail.
 
 ## 5. Создать администратора
 
-1. После публикации откройте `https://ritmsport.shop`, нажмите **Contul meu** и создайте свой аккаунт.
+1. После публикации откройте `https://ritmsport.site`, нажмите **Contul meu** и создайте свой аккаунт.
 2. Подтвердите e-mail.
 3. В Supabase откройте **SQL Editor** и выполните, заменив адрес на свой:
 
@@ -54,7 +54,7 @@ where id = (
 );
 ```
 
-4. Админка будет доступна по адресу `https://ritmsport.shop/admin.html`.
+4. Админка будет доступна по адресу `https://ritmsport.site/admin.html`.
 
 ## 6. Развернуть обработчик Whop
 
@@ -101,4 +101,4 @@ git commit -m "Connect Supabase backend and admin panel"
 git push
 ```
 
-После GitHub Pages обновится `https://ritmsport.shop`. Покупатель должен зарегистрироваться с тем же e-mail, который использовал при оплате в Whop — тогда RLS покажет ему его заказ.
+После GitHub Pages обновится `https://ritmsport.site`. Покупатель должен зарегистрироваться с тем же e-mail, который использовал при оплате в Whop — тогда RLS покажет ему его заказ.
